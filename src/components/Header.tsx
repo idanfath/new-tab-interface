@@ -12,7 +12,7 @@ export default function Header() {
   }, []);
   const links = {
     github: {
-      url: "https://github.com/idanfath",
+      url: `https://github.com/${import.meta.env.VITE_GITHUB_USERNAME}`,
       children: <Github size={16} />,
     },
   };
@@ -24,18 +24,16 @@ export default function Header() {
       hover:top-2 transition-all epic-easing max-w-lg rounded-b-xl w-full rounded-t-xl
       "
       >
-        <div className="group-hover:opacity-100 items-end text-xs opacity-0 transition-all epic-easing flex w-full justify-between">
+        <div className="group-hover:opacity-100 text-white items-end text-xs opacity-0 transition-all epic-easing flex w-full justify-between">
           <div>
             {Object.entries(links).map(([key, value]) => (
-              <a
+              <div
+                onClick={() => window.open(value.url, "_self")}
                 key={key}
-                href={value.url}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:underline"
+                className="cursor-pointer"
               >
                 {value.children}
-              </a>
+              </div>
             ))}
           </div>
           <div>

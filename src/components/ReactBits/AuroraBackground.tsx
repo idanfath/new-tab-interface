@@ -138,9 +138,13 @@ export default function Aurora(props: AuroraProps) {
     const ctn = ctnDom.current;
     if (!ctn) return;
 
-    const renderer = new Renderer();
+    const renderer = new Renderer({
+      alpha: true,
+      antialias: true,
+      premultipliedAlpha: true,
+    });
     const gl = renderer.gl;
-    gl.clearColor(1, 1, 1, 1);
+    gl.clearColor(1, 1, 1, 0);
 
     // Declare program variable so it's available in the resize callback.
     let program: Program;
