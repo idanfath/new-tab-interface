@@ -213,7 +213,7 @@ export default function PixelCard({
     canvasRef.current.style.height = `${height}px`;
 
     const colorsArray = finalColors.split(",");
-    const pxs = [];
+    const pxs: Pixel[] = [];
     for (let x = 0; x < width; x += parseInt(finalGap.toString(), 10)) {
       for (let y = 0; y < height; y += parseInt(finalGap.toString(), 10)) {
         const color =

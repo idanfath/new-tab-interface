@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useRef, useLayoutEffect, useState } from "react";
 import {
@@ -135,7 +136,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       baseX.set(baseX.get() + moveBy);
     });
 
-    const spans = [];
+    const spans: any = [];
     for (let i = 0; i < numCopies!; i++) {
       spans.push(
         <span
