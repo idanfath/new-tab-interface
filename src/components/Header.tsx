@@ -10,10 +10,16 @@ export default function Header() {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  //   TODO: make this dynamic using localStorage
   const links = {
     github: {
       url: `https://github.com/${import.meta.env.VITE_GITHUB_USERNAME}`,
       children: <Github size={16} />,
+    },
+    linkedin: {
+      url: `https://linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME}`,
+      children: "LinkedIn",
     },
   };
 
