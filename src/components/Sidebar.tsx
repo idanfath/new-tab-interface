@@ -52,6 +52,9 @@ export default function SideBar() {
     setLinks(newLink);
     localStorage.setItem("sidebar-links", JSON.stringify(newLink));
   };
+  function openUrl(url: string, target: string = "_self") {
+    window.open(url.startsWith("http") ? url : `http://${url}`, target);
+  }
   return (
     <>
       <div className="absolute left-2 space-y-2">
@@ -71,17 +74,14 @@ export default function SideBar() {
               {/*  */}
               <ContextMenu>
                 <ContextMenuTrigger>
-                  <div
-                    key={index}
-                    onClick={() => window.open(link.url, "_self")}
-                  >
+                  <div key={index} onClick={() => openUrl(link.url)}>
                     <ShinyText text={link.name} speed={6} />
                   </div>
                 </ContextMenuTrigger>
                 <ContextMenuContent>
                   <ContextMenuItem
                     className="cursor-pointer"
-                    onClick={() => window.open(link.url, "_self")}
+                    onClick={() => openUrl(link.url)}
                   >
                     <ExternalLink size={16} className="mr-1.5" />
                     Open
