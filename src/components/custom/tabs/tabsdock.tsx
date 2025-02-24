@@ -1,18 +1,18 @@
 import { cn } from "@/lib/utils";
-import { TabsName } from "./const";
+import { TabsName } from "@/types/tabstypes/tabs";
 
 export function TabsDock({
   activeTab,
   switchTab,
-  tabs,
+  tabsName,
 }: {
   activeTab: string;
   switchTab: (tab: string) => void;
-  tabs: typeof TabsName;
+  tabsName: TabsName;
 }) {
   return (
     <div className="bottom-5 bg-glass bg-white/5 rounded-md p-2 flex gap-2 max-w-md fixed animfast hover:scale-105 hover:-translate-y-1">
-      {Object.entries(tabs).map(([key, value]) => (
+      {Object.entries(tabsName).map(([key, value]) => (
         <div
           key={key}
           className={cn(

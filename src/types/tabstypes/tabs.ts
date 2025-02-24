@@ -4,3 +4,7 @@ export interface TabItem {
     icon: any;
     content: () => React.ReactNode;
 }
+
+export type TabsName = {
+    [K in TabItem['name']]: TabItem;
+}

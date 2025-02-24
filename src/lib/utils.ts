@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -22,4 +23,13 @@ export function ellipsis(str: string, length: number, ellipsisText: string = "..
 export function getUrlDomain(url: string) {
     const urlObj = new URL(url.startsWith('http') ? url : `http://${url}`);
     return urlObj.hostname;
+}
+
+
+export function fetchLocalData(key: string, defaultValue: any) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : defaultValue;
+}
+export function postLocalData(key: string, data: any) {
+    localStorage.setItem(key, JSON.stringify(data));
 }

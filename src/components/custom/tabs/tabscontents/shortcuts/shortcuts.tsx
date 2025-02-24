@@ -1,17 +1,9 @@
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
-import { cn, ellipsis, getUrlDomain, openUrl } from "@/lib/utils";
-import { Shortcut } from "@/types/tabstypes/shortcuts";
-import { AppWindow, Globe, LayoutDashboard, Pin, Settings } from "lucide-react";
-const iconMap = {
-  LayoutDashboard: LayoutDashboard,
-  AppWindow: AppWindow,
-  Settings: Settings,
-};
+/* eslint-disable react-hooks/exhaustive-deps */
+import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
+import { Shortcut, shortcutModifyFunction } from "@/types/tabstypes/shortcuts";
+import ShortcutCard from "./shortcutcard";
+import { useEffect, useState } from "react";
+import { fetchLocalData, postLocalData } from "@/lib/utils";
 
 const exampleShortcut: Shortcut[] = [
   {
@@ -26,67 +18,75 @@ const exampleShortcut: Shortcut[] = [
   {
     id: "example2",
     pinned: false,
+    icon: "Globe",
+    name: "Youtube",
+    url: "https://youtube.com",
+    createdAt: Date.now(),
+  },
+  {
+    id: "example3",
+    pinned: true,
     icon: "LayoutDashboard",
-    name: "Example 2",
+    name: "Example",
     url: "https://example.com",
+    description: "An example shortcut.",
+    createdAt: Date.now(),
+  },
+  {
+    id: "example4",
+    pinned: false,
+    icon: "LayoutDashboard",
+    name: "Example",
+    url: "https://example.com",
+    description: "An example shortcut.",
     createdAt: Date.now(),
   },
 ];
-function ShortcutCard({ shortcut }: { shortcut: Shortcut }) {
-  const Icon = shortcut.pinned ? Pin : iconMap[shortcut.icon] || Globe;
-  return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <div
-          className={cn(
-            "bg-glass bg-white/10 p-2 rounded-md flex-col cursor-pointer flex border border-white/10  hover:bg-white/[0.08] animfast",
-            "w-32 aspect-square"
-          )}
-          onClick={() => {
-            openUrl(shortcut.url);
-          }}
-        >
-          <div className="flex h-full flex-col gap-1">
-            <div className="flex gap-1.5 items-center">
-              <div className="rounded-full bg-white/15 w-7 flex-center h-7 aspect-square">
-                <Icon size={18} />
-              </div>
-              <div className="text-sm text-gray-50">{shortcut.name}</div>
-            </div>
-            <div className="text-gray-300 text-sm">
-              {ellipsis(shortcut.description || "", 20)}
-            </div>
-            <div className="text-white/50 text-nowrap text-[0.8rem]">
-              {ellipsis(getUrlDomain(shortcut.url), 20)}
-            </div>
-            <div className="text-white/20 h-full flex items-end text-nowrap text-[0.6rem]">
-              Created {new Date(shortcut.createdAt).toLocaleDateString()}
-            </div>
-          </div>
-        </div>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem>{shortcut.pinned ? "Unpin" : "Pin"}</ContextMenuItem>
-        <ContextMenuItem>Edit</ContextMenuItem>
-        <ContextMenuItem className="text-red-500">Delete</ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
-  );
-}
 
+const sortPinned = (shortcuts: Shortcut[] | []) => {
+  return [
+    ...shortcuts.filter((shortcut) => shortcut.pinned),
+    ...shortcuts.filter((shortcut) => !shortcut.pinned),
+  ];
+};
+
+//   TODO: shits are done, now make add and edit. also make this simpler first
 export default function ShortcutsContent() {
+  const [shortcuts, setShortcuts] = useState<Shortcut[]>(
+    sortPinned(fetchLocalData("shortcuts", exampleShortcut))
+  );
+
+  const updateShortcuts = (newShortcut: Shortcut[]) => {
+    setShortcuts(sortPinned(newShortcut));
+  };
+
+  useEffect(() => {
+    postLocalData("shortcuts", shortcuts);
+  }, [shortcuts]);
+
+  const modify: shortcutModifyFunction = (id: string) => {
+    const togglePin = () => {
+      updateShortcuts(
+        shortcuts.map((shortcut) =>
+          shortcut.id === id
+            ? { ...shortcut, pinned: !shortcut.pinned }
+            : shortcut
+        )
+      );
+    };
+    const remove = () => {
+      updateShortcuts(shortcuts.filter((shortcut) => shortcut.id !== id));
+    };
+    return { togglePin, remove };
+  };
   return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <div className="flex gap-2 flex-wrap">
-          {exampleShortcut.map((shortcut) => (
-            <ShortcutCard key={shortcut.id} shortcut={shortcut} />
-          ))}
-        </div>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem>New Shortcut</ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+    <ContextMenuWrap
+      className="flex gap-2 flex-1 flex-wrap w-full"
+      items={[{ children: "New Shortcut" }]}
+    >
+      {shortcuts.map((shortcut) => (
+        <ShortcutCard key={shortcut.id} shortcut={shortcut} modify={modify} />
+      ))}
+    </ContextMenuWrap>
   );
 }
