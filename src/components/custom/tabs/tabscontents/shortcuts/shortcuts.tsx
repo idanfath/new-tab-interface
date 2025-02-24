@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
 import { Shortcut, shortcutModifyFunction } from "@/types/tabstypes/shortcuts";
 import ShortcutCard from "./shortcutcard";
