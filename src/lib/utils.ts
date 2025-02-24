@@ -7,3 +7,19 @@ export function cn(...inputs: ClassValue[]) {
 export function openUrl(url: string, target: string = "_self"): void {
     window.open(url, target);
 }
+export function capitalize(str: string, eachLetter: boolean = true): string {
+    if (eachLetter) {
+        return str
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+export function ellipsis(str: string, length: number, ellipsisText: string = "..."): string {
+    return str.length > length ? str.slice(0, length) + ellipsisText : str;
+}
+export function getUrlDomain(url: string) {
+    const urlObj = new URL(url.startsWith('http') ? url : `http://${url}`);
+    return urlObj.hostname;
+}

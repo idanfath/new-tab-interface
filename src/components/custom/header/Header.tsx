@@ -73,12 +73,11 @@ export default function Header() {
         console.error(err);
       }
     };
-
     fetchContributions();
   }, []);
 
   return (
-    <header className="absolute top-[-20px] group bg-black p-1.5 px-3 select-none hover:top-2 transition-all epic-easing max-w-lg rounded-b-xl w-full rounded-t-xl">
+    <header className="absolute top-[-20px] border group bg-black p-1.5 px-3 select-none hover:top-2 transition-all epic-easing max-w-lg rounded-b-xl w-full rounded-t-xl">
       <div className="group-hover:opacity-100 items-center text-white  text-xs opacity-0 transition-all epic-easing flex w-full justify-between">
         <div className="flex-1">
           <NavigationLinks />
@@ -96,7 +95,7 @@ export default function Header() {
 
       <div className="flex w-full justify-between">
         <div className="flex-1">
-          <ShinyText text="Danne's Tool" speed={6} />
+          <ShinyText text="Danne's Tool" />
         </div>
         <div className="flex-1 flex-center">
           {githubContributions && (
@@ -106,7 +105,7 @@ export default function Header() {
           )}
         </div>
         <div className="flex-1 text-right">
-          <ShinyText text={time} speed={6} />
+          <ShinyText text={time} />
         </div>
       </div>
     </header>

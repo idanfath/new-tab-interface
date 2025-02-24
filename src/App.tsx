@@ -1,15 +1,21 @@
 import "./App.css";
 import Aurora from "@/components/ReactBits/AuroraBackground";
 import Header from "./components/custom/header/Header";
+import TabsComponent from "./components/custom/tabs/tabscomponent";
+import { ContextMenu, ContextMenuTrigger } from "./components/ui/context-menu";
 
 function App() {
   return (
-    <>
-      <AuroraBackground />
-      <div className="page relative z-10">
-        <Header />
-      </div>
-    </>
+    // disable right click (can be overridden). if this cause any bug, simply change to fragment
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <AuroraBackground />
+        <div className="page relative z-10">
+          <Header />
+          <TabsComponent />
+        </div>
+      </ContextMenuTrigger>
+    </ContextMenu>
   );
 }
 
