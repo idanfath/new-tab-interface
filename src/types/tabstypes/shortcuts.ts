@@ -1,10 +1,10 @@
 import { iconMap } from "@/consts/shortcuts";
 
-type Icon = keyof typeof iconMap;
+export type IconMap = keyof typeof iconMap;
 export interface Shortcut {
     id: string;
     pinned: boolean;
-    icon: Icon;
+    icon: IconMap;
     name: string;
     url: string;
     description?: string;
@@ -20,4 +20,5 @@ export interface ShortcutCardProps {
 export type shortcutModifyFunction = (id: string) => {
     togglePin: () => void;
     remove: () => void;
+    edit: (currentData: Shortcut) => void;
 };

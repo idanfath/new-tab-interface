@@ -26,6 +26,22 @@ export function getUrlDomain(url: string) {
 }
 
 
+// export async function fetchWebsiteTitle(url: string): Promise<string | null> {
+// TODO: implement
+
+// };
+
+export function isValidUrl(url: string) {
+    if (!url || url === "" || url === " ") return false;
+    try {
+        new URL(url.startsWith('http') ? url : `http://${url}`);
+        return true;
+    }
+    catch (e) {
+        console.error(e);
+        return false;
+    }
+}
 export function fetchLocalData(key: string, defaultValue: any) {
     const data = localStorage.getItem(key);
     return data ? JSON.parse(data) : defaultValue;
@@ -33,3 +49,9 @@ export function fetchLocalData(key: string, defaultValue: any) {
 export function postLocalData(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
 }
+
+export const getUniqueID = () => {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 10000);
+    return (timestamp + random).toString(36).slice(0, 8);
+};

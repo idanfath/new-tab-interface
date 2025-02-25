@@ -1,70 +1,175 @@
-import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
-import { Shortcut, shortcutModifyFunction } from "@/types/tabstypes/shortcuts";
-import ShortcutCard from "./shortcutcard";
 import { useEffect, useState } from "react";
-import { fetchLocalData, postLocalData } from "@/lib/utils";
+import React from "react";
+import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  IconMap,
+  Shortcut,
+  shortcutModifyFunction,
+} from "@/types/tabstypes/shortcuts";
+import {
+  fetchLocalData,
+  getUniqueID,
+  isValidUrl,
+  postLocalData,
+} from "@/lib/utils";
+import ShortcutCard from "./shortcutcard";
 
-const exampleShortcut: Shortcut[] = [
-  {
-    id: "example",
-    pinned: true,
-    icon: "LayoutDashboard",
-    name: "Example",
-    url: "https://example.com",
-    description: "An example shortcut.",
-    createdAt: Date.now(),
-  },
-  {
-    id: "example2",
-    pinned: false,
-    icon: "Globe",
-    name: "Youtube",
-    url: "https://youtube.com",
-    createdAt: Date.now(),
-  },
-  {
-    id: "example3",
-    pinned: true,
-    icon: "LayoutDashboard",
-    name: "Example",
-    url: "https://example.com",
-    description: "An example shortcut.",
-    createdAt: Date.now(),
-  },
-  {
-    id: "example4",
-    pinned: false,
-    icon: "LayoutDashboard",
-    name: "Example",
-    url: "https://example.com",
-    description: "An example shortcut.",
-    createdAt: Date.now(),
-  },
-];
+interface DialogWrapperProps {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  currentData: Shortcut | null;
+  isEditing: boolean;
+  updateShortcuts: (newShortcut: Shortcut[]) => void;
+  setCurrentData: (currentData: Shortcut | null) => void;
+  shortcuts: Shortcut[];
+}
 
-const sortPinned = (shortcuts: Shortcut[] | []) => {
-  return [
-    ...shortcuts.filter((shortcut) => shortcut.pinned),
-    ...shortcuts.filter((shortcut) => !shortcut.pinned),
-  ];
+const DEFAULT_SHORTCUT: Omit<Shortcut, "id"> = {
+  pinned: false,
+  icon: "Globe" as IconMap,
+  name: "",
+  url: "",
+  createdAt: Date.now(),
+  description: "",
 };
 
-//   TODO: shits are done, now make add and edit. also make this simpler first
-export default function ShortcutsContent() {
-  const [shortcuts, setShortcuts] = useState<Shortcut[]>(
-    sortPinned(fetchLocalData("shortcuts", exampleShortcut))
-  );
+const sortPinned = (shortcuts: Shortcut[]): Shortcut[] => {
+  return [...shortcuts].sort((a, b) => {
+    if (a.pinned === b.pinned) {
+      return b.createdAt - a.createdAt;
+    }
+    return a.pinned ? -1 : 1;
+  });
+};
 
-  const updateShortcuts = (newShortcut: Shortcut[]) => {
-    setShortcuts(sortPinned(newShortcut));
+const AddEditDialogWrap: React.FC<DialogWrapperProps> = ({
+  isOpen,
+  onOpenChange,
+  currentData,
+  isEditing,
+  updateShortcuts,
+  setCurrentData,
+  shortcuts,
+}) => {
+  useEffect(() => {
+    if (!currentData && isOpen) {
+      setCurrentData({
+        ...DEFAULT_SHORTCUT,
+        id: getUniqueID(),
+        createdAt: Date.now(),
+      });
+    }
+  }, [currentData, isOpen, setCurrentData]);
+
+  if (!currentData) return null;
+
+  const handleSubmit = () => {
+    if (isEditing) {
+      updateShortcuts(
+        shortcuts.map((shortcut) =>
+          shortcut.id === currentData.id ? currentData : shortcut
+        )
+      );
+    } else {
+      updateShortcuts([...shortcuts, currentData]);
+    }
+    setCurrentData(null);
+    onOpenChange(false);
+  };
+
+  const handleInputChange =
+    (field: keyof Shortcut) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCurrentData({ ...currentData, [field]: e.target.value });
+    };
+
+  const isFormValid = (data: Shortcut): boolean => {
+    return Boolean(data.name.trim() && data.url.trim());
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            {isEditing ? "Edit Shortcut" : "Add New Shortcuts"}
+          </DialogTitle>
+          <DialogDescription>
+            {isEditing
+              ? "Update your shortcut details."
+              : "Add a new shortcut to your list."}
+          </DialogDescription>
+        </DialogHeader>
+        <form
+          className="space-y-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (isFormValid(currentData)) {
+              handleSubmit();
+            }
+          }}
+        >
+          <Input
+            defaultValue={currentData.name}
+            onChange={handleInputChange("name")}
+            placeholder="Enter shortcut name"
+          />
+          <Input
+            defaultValue={currentData.url}
+            onChange={handleInputChange("url")}
+            onPaste={async (e) => {
+              const url = e.clipboardData.getData("text");
+              if (isValidUrl(url) && !currentData.name) {
+                // TODO: implement
+              }
+            }}
+            placeholder="Enter shortcut URL"
+          />
+          <Input
+            defaultValue={currentData.description}
+            onChange={handleInputChange("description")}
+            placeholder="Enter shortcut description"
+          />
+        </form>
+        <DialogFooter>
+          <Button onClick={handleSubmit}>Save</Button>
+          <DialogTrigger asChild>
+            <Button variant="ghost">Cancel</Button>
+          </DialogTrigger>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const ShortcutsContent: React.FC = () => {
+  const [shortcuts, setShortcuts] = useState<Shortcut[]>(() =>
+    sortPinned(fetchLocalData("shortcuts", []))
+  );
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentData, setCurrentData] = useState<Shortcut | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const updateShortcuts = (newShortcuts: Shortcut[]) => {
+    setShortcuts(sortPinned(newShortcuts));
   };
 
   useEffect(() => {
     postLocalData("shortcuts", shortcuts);
   }, [shortcuts]);
 
-  const modify: shortcutModifyFunction = (id: string) => {
-    const togglePin = () => {
+  const modify: shortcutModifyFunction = (id: string) => ({
+    togglePin: () => {
       updateShortcuts(
         shortcuts.map((shortcut) =>
           shortcut.id === id
@@ -72,20 +177,49 @@ export default function ShortcutsContent() {
             : shortcut
         )
       );
-    };
-    const remove = () => {
+    },
+    edit: (currentData: Shortcut) => {
+      setIsEditing(true);
+      setCurrentData(currentData);
+      setIsOpen(true);
+    },
+    remove: () => {
       updateShortcuts(shortcuts.filter((shortcut) => shortcut.id !== id));
-    };
-    return { togglePin, remove };
-  };
+    },
+  });
+
   return (
-    <ContextMenuWrap
-      className="flex gap-2 flex-1 flex-wrap w-full"
-      items={[{ children: "New Shortcut" }]}
-    >
-      {shortcuts.map((shortcut) => (
-        <ShortcutCard key={shortcut.id} shortcut={shortcut} modify={modify} />
-      ))}
-    </ContextMenuWrap>
+    <>
+      <ContextMenuWrap
+        className="flex gap-2 flex-1 flex-wrap w-full"
+        items={[
+          {
+            children: "New Shortcut",
+            props: {
+              onClick: () => {
+                setIsEditing(false);
+                setCurrentData(null);
+                setIsOpen(true);
+              },
+            },
+          },
+        ]}
+      >
+        {shortcuts.map((shortcut) => (
+          <ShortcutCard key={shortcut.id} shortcut={shortcut} modify={modify} />
+        ))}
+      </ContextMenuWrap>
+      <AddEditDialogWrap
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        currentData={currentData}
+        setCurrentData={setCurrentData}
+        isEditing={isEditing}
+        updateShortcuts={updateShortcuts}
+        shortcuts={shortcuts}
+      />
+    </>
   );
-}
+};
+
+export default ShortcutsContent;

@@ -17,7 +17,8 @@ export function Favicon({ url, size = 16, className, fallback }: FaviconProps) {
     return fallback || <Globe size={size} className={className} />;
   }
 
-  const domain = new URL(url).hostname;
+  const domain = new URL(url.startsWith("http") ? url : `https://${url}`)
+    .hostname;
   const googleFaviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=${size}`;
 
   return (
