@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -21,7 +22,9 @@ export default function ContextMenuWrap({
 }) {
   return (
     <ContextMenu>
-      <ContextMenuTrigger className={className}>{children}</ContextMenuTrigger>
+      <ContextMenuTrigger className={cn("h-fit", className)}>
+        {children}
+      </ContextMenuTrigger>
       {items && (
         <ContextMenuContent>
           {items.map((item, index) => (

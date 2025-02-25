@@ -25,12 +25,6 @@ export function getUrlDomain(url: string) {
     return urlObj.hostname;
 }
 
-
-// export async function fetchWebsiteTitle(url: string): Promise<string | null> {
-// TODO: implement
-
-// };
-
 export function isValidUrl(url: string) {
     if (!url || url === "" || url === " ") return false;
     try {

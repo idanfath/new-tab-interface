@@ -17,12 +17,7 @@ import {
   Shortcut,
   shortcutModifyFunction,
 } from "@/types/tabstypes/shortcuts";
-import {
-  fetchLocalData,
-  getUniqueID,
-  isValidUrl,
-  postLocalData,
-} from "@/lib/utils";
+import { fetchLocalData, getUniqueID, postLocalData } from "@/lib/utils";
 import ShortcutCard from "./shortcutcard";
 
 interface DialogWrapperProps {
@@ -127,12 +122,6 @@ const AddEditDialogWrap: React.FC<DialogWrapperProps> = ({
           <Input
             defaultValue={currentData.url}
             onChange={handleInputChange("url")}
-            onPaste={async (e) => {
-              const url = e.clipboardData.getData("text");
-              if (isValidUrl(url) && !currentData.name) {
-                // TODO: implement
-              }
-            }}
             placeholder="Enter shortcut URL"
           />
           <Input

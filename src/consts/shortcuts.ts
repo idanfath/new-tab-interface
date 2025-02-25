@@ -1,8 +1,6 @@
-import { LayoutDashboard, Globe, ExternalLink, SquareLibrary } from "lucide-react";
+import { Globe, Pin } from "lucide-react";
 
 export const iconMap = {
-    LayoutDashboard: LayoutDashboard,
+    Pin: Pin,
     Globe: Globe,
-    ExternalLink: ExternalLink,
-    Utility: SquareLibrary,
 } as const;

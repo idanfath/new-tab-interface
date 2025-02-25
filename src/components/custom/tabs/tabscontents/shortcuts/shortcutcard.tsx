@@ -14,6 +14,7 @@ export default function ShortcutCard({
 }) {
   return (
     <ContextMenuWrap
+      className="h-fit"
       items={[
         {
           children: shortcut.pinned ? "Unpin" : "Pin",
@@ -46,7 +47,9 @@ function ShortcutCardBarebone({
   shortcut: Shortcut;
   viewOnly: boolean;
 }) {
-  const Icon = shortcut.pinned ? Pin : iconMap[shortcut.icon] || Globe;
+  const Icon = shortcut.pinned
+    ? iconMap["Pin"]
+    : iconMap[shortcut.icon] || Globe;
   return (
     <div
       className={cn(
