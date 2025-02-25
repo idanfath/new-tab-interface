@@ -6,7 +6,6 @@ import { TabsName } from "@/types/tabstypes/tabs";
 import { LayoutDashboard, AppWindow, Settings } from "lucide-react";
 import placeholder from "../placeholder";
 import ShortcutsContent from "./tabscontents/shortcuts/shortcuts";
-// TODO: it errors when i chagne tabs bruh 💔
 
 export default function TabsComponent() {
   const [activeTab, setActiveTab] = useState("shortcuts");
@@ -21,13 +20,18 @@ export default function TabsComponent() {
     settings: { name: "settings", icon: Settings, content: placeholder },
   };
 
-  const switchTab = (tab: string) => setActiveTab(activeTab === tab ? "" : tab);
+  const switchTab = (tab: string) => {
+    setActiveTab(tab === activeTab ? "" : tab);
+  };
+
+  const TabContent = activeTab ? tabsName[activeTab].content : null;
+
   return (
     <>
       <Tabs value={activeTab}>
         {activeTab && (
           <TabsContentWrapper activeTab={activeTab} setActiveTab={setActiveTab}>
-            {activeTab && tabsName[activeTab].content()}
+            {TabContent && <TabContent />}
           </TabsContentWrapper>
         )}
       </Tabs>
