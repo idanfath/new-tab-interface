@@ -62,8 +62,8 @@ function ShortcutCardBarebone({
         }
       }}
     >
-      <div className="flex h-full flex-col gap-1">
-        <div className="flex gap-1.5 items-center">
+      <div className="flex h-full flex-col max-w-full gap-1 overflow-clip">
+        <div className="flex gap-1.5 items-center  ">
           <div className="rounded-full bg-white/15 w-7 flex-center h-7 aspect-square">
             {shortcut.pinned ? (
               <Pin size={18} />
@@ -75,7 +75,9 @@ function ShortcutCardBarebone({
               />
             )}
           </div>
-          <div className="text-sm text-gray-50">{shortcut.name}</div>
+          <div className="text-sm text-gray-50 text-nowrap">
+            {ellipsis(shortcut.name || "", 10)}
+          </div>
         </div>
         <div className="text-gray-300 text-sm">
           {ellipsis(shortcut.description || "", 20)}

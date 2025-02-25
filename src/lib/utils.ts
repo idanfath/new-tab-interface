@@ -1,3 +1,5 @@
+// TODO: categorize functions to different files
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -21,6 +23,8 @@ export function ellipsis(str: string, length: number, ellipsisText: string = "..
     return str.length > length ? str.slice(0, length) + ellipsisText : str;
 }
 export function getUrlDomain(url: string) {
+    if (!url || url === "" || url === " ")
+        return "";
     const urlObj = new URL(url.startsWith('http') ? url : `http://${url}`);
     return urlObj.hostname;
 }

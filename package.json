@@ -8,7 +8,8 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "movetoherd": "if not exist C:\\main\\projects\\herd_project\\erik mkdir C:\\main\\projects\\herd_project\\erik && rmdir /S /Q C:\\main\\projects\\herd_project\\erik && xcopy /E /I /Y dist C:\\main\\projects\\herd_project\\erik"
+        "toherd": "explorer C:\\main\\projects\\herd_project\\erik",
+        "todist": "explorer C:\\main\\projects\\mnt_interface\\dist\\"
     },
     "dependencies": {
         "@number-flow/react": "^0.5.5",
@@ -28,9 +29,11 @@
         "gsap": "^3.12.7",
         "lucide-react": "^0.475.0",
         "motion": "^12.4.7",
+        "next-themes": "^0.4.4",
         "ogl": "^1.0.11",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
+        "sonner": "^2.0.1",
         "tailwind-merge": "^3.0.1",
         "tailwindcss-animate": "^1.0.7",
         "three": "^0.167.1"

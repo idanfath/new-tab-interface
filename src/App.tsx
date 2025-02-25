@@ -3,11 +3,13 @@ import Aurora from "@/components/ReactBits/AuroraBackground";
 import Header from "./components/custom/header/Header";
 import TabsComponent from "./components/custom/tabs/tabscomponent";
 import ContextMenuWrap from "./components/wrapper/contextmenuwrap";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <ContextMenuWrap className="select-none">
       <AuroraBackground />
+      <Toaster />
       <div className="page relative z-10">
         <Header />
         <TabsComponent />

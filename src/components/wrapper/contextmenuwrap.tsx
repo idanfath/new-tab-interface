@@ -5,11 +5,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-
-interface ContextMenuItemProps {
-  props?: React.ComponentPropsWithoutRef<typeof ContextMenuItem>;
-  children: React.ReactNode;
-}
+import { ContextMenuItemProps } from "@/types/contextmenuwrap";
 
 export default function ContextMenuWrap({
   children,
