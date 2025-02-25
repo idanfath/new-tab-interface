@@ -2,8 +2,6 @@
 
 A sleek and modern interface management system with a beautiful Aurora background effect and fluid interactions.
 
-![Danne's Tool](https://i.imgur.com/example.png)
-
 ## ✨ Features
 
 - **Dynamic Shortcuts Management** - Create, edit and organize your shortcuts with an intuitive interface
