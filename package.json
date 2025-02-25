@@ -8,7 +8,7 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "movetoherd": "rmdir /S /Q C:\\main\\projects\\herd_project\\erik && xcopy /E /I /Y dist C:\\main\\projects\\herd_project\\erik && rmdir /S /Q dist"
+        "movetoherd": "if not exist C:\\main\\projects\\herd_project\\erik mkdir C:\\main\\projects\\herd_project\\erik && rmdir /S /Q C:\\main\\projects\\herd_project\\erik && xcopy /E /I /Y dist C:\\main\\projects\\herd_project\\erik"
     },
     "dependencies": {
         "@number-flow/react": "^0.5.5",
