@@ -27,7 +27,7 @@ export default function TabsComponent() {
       <Tabs value={activeTab}>
         {activeTab && (
           <TabsContentWrapper activeTab={activeTab} setActiveTab={setActiveTab}>
-            {activeTab}
+            {activeTab && tabsName[activeTab].content()}
           </TabsContentWrapper>
         )}
       </Tabs>
