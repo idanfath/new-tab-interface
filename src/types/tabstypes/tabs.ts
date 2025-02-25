@@ -2,7 +2,7 @@
 export interface TabItem {
     name: string;
     icon: any;
-    content: () => React.ReactNode;
+    content: any;
 }
 
 export type TabsName = {
