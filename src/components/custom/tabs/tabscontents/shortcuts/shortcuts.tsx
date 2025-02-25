@@ -180,7 +180,7 @@ const ShortcutsContent: React.FC = () => {
   return (
     <>
       <ContextMenuWrap
-        className="flex gap-2 flex-1 flex-wrap w-full"
+        className="flex gap-2 flex-1 flex-wrap w-full "
         items={[
           {
             children: "New Shortcut",

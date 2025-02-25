@@ -22,7 +22,7 @@ export default function ContextMenuWrap({
 }) {
   return (
     <ContextMenu>
-      <ContextMenuTrigger className={cn("h-fit", className)}>
+      <ContextMenuTrigger className={cn(className)}>
         {children}
       </ContextMenuTrigger>
       {items && (
