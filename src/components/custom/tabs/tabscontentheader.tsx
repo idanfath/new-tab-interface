@@ -1,5 +1,5 @@
 import ShinyText from "@/components/ReactBits/ShinyText";
-import { capitalize } from "@/lib/utils";
+import { capitalize } from "@/lib/stringlib";
 
 export default function TabsContentHeader(props) {
   return (

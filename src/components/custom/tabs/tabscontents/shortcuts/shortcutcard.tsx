@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/hover-card";
 import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
 import { iconMap } from "@/consts/shortcuts";
-import { cn, openUrl, ellipsis, getUrlDomain } from "@/lib/utils";
+import { ellipsis } from "@/lib/stringlib";
+import { cn, openUrl, getUrlHostname } from "@/lib/utils";
 import { Shortcut, shortcutModifyFunction } from "@/types/tabstypes/shortcuts";
 import { Pin, Globe } from "lucide-react";
 
@@ -124,7 +125,7 @@ function ShortcutCardBarebone({
           {ellipsis(shortcut.description || "", 20)}
         </div>
         <div className="text-white/50 text-nowrap text-[0.8rem]">
-          {ellipsis(getUrlDomain(shortcut.url), 20)}
+          {ellipsis(getUrlHostname(shortcut.url), 20)}
         </div>
         <div className="text-white/20 h-full flex items-end text-nowrap text-[0.6rem]">
           Created {new Date(shortcut.createdAt).toLocaleDateString()}
