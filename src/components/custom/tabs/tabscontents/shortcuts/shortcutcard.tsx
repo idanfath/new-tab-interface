@@ -1,4 +1,9 @@
 import { Favicon } from "@/components/custom/favicon/Favicon";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
 import { iconMap } from "@/consts/shortcuts";
 import { cn, openUrl, ellipsis, getUrlDomain } from "@/lib/utils";
@@ -12,6 +17,20 @@ export default function ShortcutCard({
   shortcut: Shortcut;
   modify: shortcutModifyFunction;
 }) {
+  const hoverCardItem = [
+    { label: "Name", value: shortcut.name },
+    {
+      label: "URL",
+      value: shortcut.url,
+      onClick: () => openUrl(shortcut.url),
+      className: "hover:underline cursor-pointer",
+    },
+    { label: "Description", value: shortcut.description },
+    {
+      label: "Created",
+      value: new Date(shortcut.createdAt).toLocaleDateString(),
+    },
+  ];
   return (
     <ContextMenuWrap
       className="h-fit"
@@ -35,7 +54,29 @@ export default function ShortcutCard({
         },
       ]}
     >
-      <ShortcutCardBarebone shortcut={shortcut} viewOnly={false} />
+      <HoverCard>
+        <HoverCardTrigger>
+          <ShortcutCardBarebone shortcut={shortcut} viewOnly={false} />
+        </HoverCardTrigger>
+        <HoverCardContent className="bg-glass border-white/10 w-64 space-y-3 cursor-default">
+          <Favicon
+            url={shortcut.url}
+            size={96}
+            className="rounded-lg  cursor-pointer hover:scale-[1.02] animfast"
+          />
+          {hoverCardItem.map(({ label, value, onClick, className }) => (
+            <div key={label}>
+              <div className="text-white/50 text-xs">{label}</div>
+              <div
+                className={cn("text-white/80 text-sm", className)}
+                onClick={onClick}
+              >
+                {value}
+              </div>
+            </div>
+          ))}
+        </HoverCardContent>
+      </HoverCard>
     </ContextMenuWrap>
   );
 }

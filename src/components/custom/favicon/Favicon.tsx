@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Globe } from "lucide-react";
+import { Globe, Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FaviconProps {
@@ -7,9 +7,16 @@ interface FaviconProps {
   size?: number;
   className?: string;
   fallback?: React.ReactNode;
+  loadingComponent?: React.ReactNode;
 }
 
-export function Favicon({ url, size = 16, className, fallback }: FaviconProps) {
+export function Favicon({
+  url,
+  size = 16,
+  className,
+  fallback,
+  loadingComponent,
+}: FaviconProps) {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,8 +30,11 @@ export function Favicon({ url, size = 16, className, fallback }: FaviconProps) {
 
   return (
     <>
-      {(isLoading || error) &&
-        (fallback || <Globe size={size} className={className} />)}
+      {isLoading
+        ? loadingComponent || (
+            <Loader size={size} className={cn("animate-spin", className)} />
+          )
+        : error && (fallback || <Globe size={size} className={className} />)}
       <img
         src={googleFaviconUrl}
         alt={`${domain} favicon`}
