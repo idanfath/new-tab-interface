@@ -15,7 +15,7 @@ export default function TabsContentWrapper({
     <TabsContent value={activeTab}>
       <div
         className={cn(
-          "max-w-[70vw] max-h-[70vh] flex flex-col border border-white/5 relative bg-black/40 bg-glass rounded-lg",
+          "max-w-[70vw] mb-10 max-h-[70vh] flex flex-col border border-white/5 relative bg-black/40 bg-glass rounded-lg",
           "min-h-[600px] min-w-[800px]"
         )}
       >
