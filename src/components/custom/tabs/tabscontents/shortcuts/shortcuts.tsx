@@ -1,28 +1,11 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  IconMap,
-  Shortcut,
-  shortcutModifyFunction,
-} from "@/types/tabstypes/shortcuts";
-import {
-  fetchLocalData,
-  getUniqueID,
-  isValidUrl,
-  postLocalData,
-} from "@/lib/utils";
+import { Shortcut, shortcutModifyFunction } from "@/types/tabstypes/shortcuts";
+import { fetchLocalData, postLocalData } from "@/lib/utils";
 import ShortcutCard from "./shortcutcard";
 import { toast } from "sonner";
 import { sonnerMap } from "@/consts/sonnermap";
@@ -30,134 +13,11 @@ import { exportToJson, handleJsonFileImport } from "@/lib/jsonlib";
 import { ContextMenuItemProps } from "@/types/contextmenuwrap";
 import { XCircle } from "lucide-react";
 import TooltipWrap from "@/components/wrapper/tooltipwrap";
-
-interface DialogWrapperProps {
-  isOpen: boolean;
-  onOpenChange: (isOpen: boolean) => void;
-  currentData: Shortcut | null;
-  isEditing: boolean;
-  updateShortcuts: (newShortcut: Shortcut[]) => void;
-  setCurrentData: (currentData: Shortcut | null) => void;
-  shortcuts: Shortcut[];
-}
-
-const DEFAULT_SHORTCUT: Omit<Shortcut, "id"> = {
-  pinned: false,
-  icon: "Globe" as IconMap,
-  name: "",
-  url: "",
-  createdAt: Date.now(),
-  description: "",
-};
-
-const sortPinned = (shortcuts: Shortcut[]): Shortcut[] => {
-  return [...shortcuts].sort((a, b) => {
-    if (a.pinned === b.pinned) {
-      return b.createdAt - a.createdAt;
-    }
-    return a.pinned ? -1 : 1;
-  });
-};
-
-const AddEditDialogWrap: React.FC<DialogWrapperProps> = ({
-  isOpen,
-  onOpenChange,
-  currentData,
-  isEditing,
-  updateShortcuts,
-  setCurrentData,
-  shortcuts,
-}) => {
-  useEffect(() => {
-    if (!currentData && isOpen) {
-      setCurrentData({
-        ...DEFAULT_SHORTCUT,
-        id: getUniqueID(),
-        createdAt: Date.now(),
-      });
-    }
-  }, [currentData, isOpen, setCurrentData]);
-
-  if (!currentData) return null;
-
-  const handleSubmit = () => {
-    if (!validateForm()) return;
-    if (isEditing) {
-      updateShortcuts(
-        shortcuts.map((shortcut) =>
-          shortcut.id === currentData.id ? currentData : shortcut
-        )
-      );
-    } else {
-      updateShortcuts([...shortcuts, currentData]);
-    }
-    setCurrentData(null);
-    onOpenChange(false);
-  };
-
-  const handleInputChange =
-    (field: keyof Shortcut) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCurrentData({ ...currentData, [field]: e.target.value });
-    };
-
-  const validateForm = (): boolean => {
-    return Boolean(
-      currentData &&
-        currentData.name &&
-        currentData.url &&
-        currentData.url.length < 1 &&
-        currentData.name.length < 1 &&
-        !isValidUrl(currentData.url)
-    );
-  };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {isEditing ? "Edit Shortcut" : "Add New Shortcuts"}
-            </DialogTitle>
-            <DialogDescription>
-              {isEditing
-                ? "Update your shortcut details."
-                : "Add a new shortcut to your list."}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-2">
-            <Input
-              defaultValue={currentData.name}
-              onChange={handleInputChange("name")}
-              placeholder="Enter shortcut name"
-            />
-            <Input
-              defaultValue={currentData.url}
-              onChange={handleInputChange("url")}
-              placeholder="Enter shortcut URL"
-            />
-            <Input
-              defaultValue={currentData.description}
-              onChange={handleInputChange("description")}
-              placeholder="Enter shortcut description"
-            />
-          </div>
-          <DialogFooter>
-            <Button>Save</Button>
-            <DialogTrigger asChild>
-              <Button variant="ghost">Cancel</Button>
-            </DialogTrigger>
-          </DialogFooter>
-        </DialogContent>
-      </form>
-    </Dialog>
-  );
-};
+import {
+  sortPinned,
+  useShortcutsModify,
+} from "@/lib/componentlib/shortcutslib";
+import AddEditDialogWrap from "./editadddialog";
 
 const ShortcutsContent: React.FC = () => {
   const [shortcuts, setShortcuts] = useState<Shortcut[]>(() =>
@@ -166,17 +26,15 @@ const ShortcutsContent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentData, setCurrentData] = useState<Shortcut | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [filteredShortcuts, setFilteredShortcuts] = useState<
-    Shortcut[] | null
-  >();
+  const [filteredData, setFilteredData] = useState<Shortcut[] | null>();
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
     if (filter.length < 1) {
-      setFilteredShortcuts(null);
+      setFilteredData(null);
     }
     const searchterm = filter.trim().toLowerCase();
-    setFilteredShortcuts(
+    setFilteredData(
       shortcuts.filter(
         (shortcut) =>
           shortcut.name.toLowerCase().includes(searchterm) ||
@@ -195,25 +53,13 @@ const ShortcutsContent: React.FC = () => {
     postLocalData("shortcuts", shortcuts);
   }, [shortcuts]);
 
-  const modify: shortcutModifyFunction = (id: string) => ({
-    togglePin: () => {
-      updateShortcuts(
-        shortcuts.map((shortcut) =>
-          shortcut.id === id
-            ? { ...shortcut, pinned: !shortcut.pinned }
-            : shortcut
-        )
-      );
-    },
-    edit: (currentData: Shortcut) => {
-      setIsEditing(true);
-      setCurrentData(currentData);
-      setIsOpen(true);
-    },
-    remove: () => {
-      updateShortcuts(shortcuts.filter((shortcut) => shortcut.id !== id));
-    },
-  });
+  const modify: shortcutModifyFunction = useShortcutsModify(
+    updateShortcuts,
+    shortcuts,
+    setIsEditing,
+    setCurrentData,
+    setIsOpen
+  );
 
   return (
     <>
@@ -250,12 +96,15 @@ const ShortcutsContent: React.FC = () => {
           </TooltipWrap>
         </div>
         <div className="flex gap-2 flex-wrap">
-          {(filteredShortcuts || shortcuts).map((shortcut) => (
-            <ShortcutCard
-              key={shortcut.id}
-              shortcut={shortcut}
-              modify={modify}
-            />
+          {(filteredData || shortcuts).map((shortcut) => (
+            // this is quick-added and haven't been tested, so it might not work
+            <button className="text-left" key={shortcut.id}>
+              <ShortcutCard
+                key={shortcut.id}
+                shortcut={shortcut}
+                modify={modify}
+              />
+            </button>
           ))}
         </div>
       </ContextMenuWrap>

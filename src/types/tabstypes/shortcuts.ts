@@ -22,3 +22,12 @@ export type shortcutModifyFunction = (id: string) => {
     remove: () => void;
     edit: (currentData: Shortcut) => void;
 };
+export interface DialogWrapperProps {
+    isOpen: boolean;
+    onOpenChange: (isOpen: boolean) => void;
+    currentData: Shortcut | null;
+    isEditing: boolean;
+    updateShortcuts: (newShortcut: Shortcut[]) => void;
+    setCurrentData: (currentData: Shortcut | null) => void;
+    shortcuts: Shortcut[];
+}

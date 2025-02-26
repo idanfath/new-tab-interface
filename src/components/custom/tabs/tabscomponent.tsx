@@ -1,11 +1,20 @@
 import { Tabs } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TabsDock } from "./tabsdock";
 import TabsContentWrapper from "./tabscontentwrapper";
 import { tabsName } from "./tabscontents/tabscontentmap";
+import { fetchLocalData, postLocalData } from "@/lib/utils";
 
 export default function TabsComponent() {
-  const [activeTab, setActiveTab] = useState("shortcuts");
+  const [activeTab, setActiveTab] = useState(
+    fetchLocalData("activeTab", "shortcuts")
+  );
+
+  useEffect(() => {
+    if (activeTab) {
+      postLocalData("activeTab", activeTab);
+    }
+  }, [activeTab]);
 
   const switchTab = (tab: string) => {
     setActiveTab(tab === activeTab ? "" : tab);
