@@ -8,8 +8,8 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "toherd": "explorer C:\\main\\projects\\herd_project\\erik",
-        "todist": "explorer C:\\main\\projects\\mnt_interface\\dist\\"
+        "toherd": "explorer C:\\main\\projects\\site@herd\\erik",
+        "todist": "explorer C:\\main\\projects\\projects@self\\dist\\"
     },
     "dependencies": {
         "@number-flow/react": "^0.5.5",
