@@ -7,9 +7,9 @@
         "dev": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview",
+        "preview": "vite preview ",
         "toherd": "explorer C:\\main\\projects\\site@herd\\erik",
-        "todist": "explorer C:\\main\\projects\\projects@self\\dist\\"
+        "todist": "explorer C:\\main\\projects\\projects@self\\mnt_interface\\dist\\"
     },
     "dependencies": {
         "@number-flow/react": "^0.5.5",

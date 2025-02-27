@@ -70,6 +70,7 @@ export default function AppWakapi() {
         const options = {
           headers: {
             Authorization: `Basic ${btoa(import.meta.env.VITE_WAKAPI_API_KEY)}`,
+            "Access-Control-Allow-Origin": "*",
           },
         };
         const baseUrl = import.meta.env.VITE_WAKAPI_BASE_URL;
@@ -137,14 +138,16 @@ export default function AppWakapi() {
               </div>
             </div>
           ) : (
-            <div className="text-sm">
-              Turn on the server to start using this feature
-            </div>
+            <>
+              <div className="text-sm">
+                Turn on the server to start using this feature.
+              </div>
+            </>
           )}
         </AlertDescription>
       </Alert>
 
-      {sR && (
+      {sR ? (
         <>
           {["stats_l7d", "stats"].map((period) => (
             <Alert key={period}>
@@ -192,6 +195,8 @@ export default function AppWakapi() {
             </Alert>
           ))}
         </>
+      ) : (
+        <div className="text-xs">Note: Wakapi doesn't support CORS</div>
       )}
     </div>
   );

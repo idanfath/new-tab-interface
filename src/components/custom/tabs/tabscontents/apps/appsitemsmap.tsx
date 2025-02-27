@@ -7,7 +7,6 @@ import AppWakapi from "./appsitems/wakapi/wakapi";
 
 const TabsAppsItems: TabsAppsItem[] = [
   {
-    id: "cobalt_self_host",
     name: "Cobalt Selfhost",
     description: dedent`
       Download video or audio from any supported service by simply pasting the URL.
@@ -20,7 +19,6 @@ const TabsAppsItems: TabsAppsItem[] = [
     createdAt: new Date("2025-02-24").getTime(),
   },
   {
-    id: "wakapi_self_host",
     name: "Wakapi Selfhost",
     description: dedent`
     Take a glance at your coding activity and see how you're doing.
