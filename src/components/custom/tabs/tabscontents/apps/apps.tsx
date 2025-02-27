@@ -1,14 +1,12 @@
 import { TabsAppsCard } from "./appcard";
-import TabsAppsItems from "./appsitemsmap";
+import { TabsAppsItems } from "./appsitemsmap";
 
 export default function TabsApps() {
   return (
-    <div className="flex-1 w-full">
-      <div className="flex border-white/10 bg-glass bg-black/20 rounded-md border">
-        {TabsAppsItems.map((item) => (
-          <TabsAppsCard key={item.name} item={item} />
-        ))}
-      </div>
+    <div className="flex-1 w-full flex flex-col gap-2">
+      {TabsAppsItems.map((item) => (
+        <TabsAppsCard key={item.name} item={item} />
+      ))}
     </div>
   );
 }
