@@ -1,7 +1,7 @@
 import "./App.css";
 import Aurora from "@/components/ReactBits/AuroraBackground";
 import Header from "./components/custom/header/Header";
-import TabsComponent from "./components/custom/tabs/tabscomponent";
+import TabsComponent from "./components/custom/tabs/tabs";
 import ContextMenuWrap from "./components/wrapper/contextmenuwrap";
 import { Toaster } from "./components/ui/sonner";
 
