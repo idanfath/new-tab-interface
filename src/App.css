@@ -4,6 +4,8 @@
     align-items: center;
 }
 
+
+
 .page {
     @apply flex-center h-screen;
 }

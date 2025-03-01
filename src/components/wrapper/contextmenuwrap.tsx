@@ -22,7 +22,7 @@ export default function ContextMenuWrap({
         {children}
       </ContextMenuTrigger>
       {items && (
-        <ContextMenuContent>
+        <ContextMenuContent onClick={(e) => e.stopPropagation()}>
           {items.map((item, index) => (
             <ContextMenuItem {...item.props} key={index}>
               {item.children}

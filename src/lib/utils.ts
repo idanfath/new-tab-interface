@@ -14,7 +14,8 @@ export function openUrl(url: string, target: string = "_self"): void {
 export function getUrlHostname(url: string) {
   if (!isValidUrl(url)) return "";
   const urlObj = new URL(url.startsWith("http") ? url : `http://${url}`);
-  return urlObj.hostname;
+  const parts = urlObj.hostname.split(".");
+  return parts.length > 2 ? parts.slice(-2).join(".") : urlObj.hostname;
 }
 
 export function isValidUrl(url: string) {

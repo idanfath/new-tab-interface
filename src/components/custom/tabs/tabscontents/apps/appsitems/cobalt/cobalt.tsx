@@ -39,7 +39,7 @@ export default function AppCobalt() {
   useEffect(() => {
     const checkServer = () => {
       axios
-        .get("http://localhost:9000/")
+        .get("/api/cobalt/")
         .then((res) => {
           setServerInfo(res.data);
         })
@@ -68,14 +68,12 @@ export default function AppCobalt() {
   const handleDownload = async () => {
     if (!url) return;
     try {
-      const response = await axios.post("http://localhost:9000/", options, {
+      const response = await axios.post("/api/cobalt/", options, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
       });
-      console.log(response);
-      console.log("p");
       if (!response) throw new Error("No data returned");
       const { data } = response;
       switch (data.status) {
