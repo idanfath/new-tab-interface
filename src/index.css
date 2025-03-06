@@ -123,3 +123,8 @@
 .bg-glass {
     @apply bg-opacity-10 backdrop-blur-lg
 }
+
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}

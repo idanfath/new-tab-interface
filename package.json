@@ -3,14 +3,11 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
-    "proxy": "http://localhost:6901",
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
-        "preview": "vite preview ",
-        "toherd": "explorer C:\\main\\projects\\site@herd\\erik",
-        "todist": "explorer C:\\main\\projects\\projects@self\\mnt_interface\\dist\\"
+        "preview": "vite preview "
     },
     "dependencies": {
         "@number-flow/react": "^0.5.5",

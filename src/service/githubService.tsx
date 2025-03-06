@@ -1,9 +1,12 @@
+import { fetchLocalData } from "@/lib/utils";
+
 export const GitHubService = {
   async getContributions() {
     const response = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${
-        import.meta.env.VITE_GITHUB_USERNAME
-      }?y=last`
+      `https://github-contributions-api.jogruber.de/v4/${fetchLocalData(
+        "github_username",
+        "idanfath"
+      )}?y=last`
     );
 
     if (!response.ok) {

@@ -1,6 +1,6 @@
 import ShinyText from "@/components/ReactBits/ShinyText";
 import { useTime } from "@/hooks/useTime";
-import { cn, openUrl } from "@/lib/utils";
+import { cn, fetchLocalData, openUrl } from "@/lib/utils";
 import { GitHubService } from "@/service/githubService";
 import { ContributionLevel, ContributionResponse, Links } from "@/types/header";
 import { useEffect, useState } from "react";
@@ -15,12 +15,8 @@ const CONTRIBUTION_CLASSES: Record<ContributionLevel, string> = {
 
 const links: Links = {
   github: {
-    url: `https://github.com/${import.meta.env.VITE_GITHUB_USERNAME}`,
+    url: `https://github.com/${fetchLocalData("github_username", "idanfath")}`,
     children: "Gibby",
-  },
-  linkedin: {
-    url: `https://linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME}`,
-    children: "LinkedIn",
   },
 };
 
@@ -77,7 +73,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="absolute top-[-20px] border group bg-black p-1.5 px-3 select-none hover:top-2 transition-all epic-easing max-w-lg rounded-b-xl w-full rounded-t-xl">
+    <header className="absolute top-[-17px] border group bg-black p-1.5 px-3 select-none hover:top-2 transition-all epic-easing max-w-lg rounded-b-xl w-full rounded-t-xl">
       <div className="group-hover:opacity-100 items-center text-white  text-xs opacity-0 transition-all epic-easing flex w-full justify-between">
         <div className="flex-1">
           <NavigationLinks />

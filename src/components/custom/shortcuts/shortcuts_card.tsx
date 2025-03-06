@@ -1,4 +1,3 @@
-import { Favicon } from "@/components/custom/favicon/Favicon";
 import {
   HoverCard,
   HoverCardContent,
@@ -8,8 +7,9 @@ import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
 import { iconMap } from "@/consts/shortcuts";
 import { ellipsis } from "@/lib/stringlib";
 import { cn, openUrl, getUrlHostname } from "@/lib/utils";
-import { Shortcut, shortcutModifyFunction } from "@/types/tabstypes/shortcuts";
+import { Shortcut, shortcutModifyFunction } from "@/types/shortcuts";
 import { Pin, Globe } from "lucide-react";
+import { Favicon } from "../favicon/Favicon";
 
 export default function ShortcutCard({
   shortcut,

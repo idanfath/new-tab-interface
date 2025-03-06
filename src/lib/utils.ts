@@ -33,9 +33,20 @@ export function toUrl(url: string) {
   return url.startsWith("http") ? url : `http://${url}`;
 }
 
-export function fetchLocalData(key: string, defaultValue: any) {
+export function fetchLocalData(
+  key: string,
+  defaultValue: any,
+  mustBeJSON: boolean = false
+) {
   const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : defaultValue;
+  if (data) {
+    try {
+      return JSON.parse(data);
+    } catch {
+      return mustBeJSON ? defaultValue : data;
+    }
+  }
+  return defaultValue;
 }
 export function postLocalData(key: string, data: any) {
   localStorage.setItem(key, JSON.stringify(data));
