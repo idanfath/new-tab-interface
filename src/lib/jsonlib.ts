@@ -9,9 +9,19 @@ export const handleJsonFileImport = async (file: File): Promise<any> => {
           throw new Error("Invalid file content");
         }
         const data = JSON.parse(content);
-        if (!Array.isArray(data)) {
-          throw new Error("Invalid data format");
+        if (typeof data !== "object" || data === null) {
+          throw new Error("Invalid file content");
         }
+        Object.entries(data).forEach(([key, value]) => {
+          if (typeof value === "string") {
+            try {
+              const parsedValue = JSON.parse(value);
+              data[key] = parsedValue;
+            } catch {
+              data[key] = value;
+            }
+          }
+        });
         resolve(data);
       } catch (err) {
         reject(err);

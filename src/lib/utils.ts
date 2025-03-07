@@ -49,7 +49,8 @@ export function fetchLocalData(
   return defaultValue;
 }
 export function postLocalData(key: string, data: any) {
-  localStorage.setItem(key, JSON.stringify(data));
+  data = typeof data === "object" ? JSON.stringify(data) : data;
+  localStorage.setItem(key, data);
 }
 
 export const getUniqueID = () => {

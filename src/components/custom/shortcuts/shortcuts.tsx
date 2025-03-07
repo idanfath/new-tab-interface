@@ -188,8 +188,9 @@ function createContextMenuItems(
             if (!file) return;
             try {
               const data = await handleJsonFileImport(file);
-              setShortcuts(sortPinned(data));
-              toast("Shortcuts imported successfully", sonnerMap.success);
+              console.log(data);
+              setShortcuts(sortPinned(data.shortcuts));
+              toast("Settings successfully", sonnerMap.success);
             } catch (err) {
               console.error(err);
               toast(
@@ -218,7 +219,7 @@ function createContextMenuItems(
                 allowedKeys.includes(key)
               )
             );
-            exportToJson(allLocalData, "new_tab_interface_backup");
+            exportToJson(allLocalData, "new_tab_interface_backup.json");
             toast("Shortcuts exported successfully", sonnerMap.success);
           } catch (err) {
             console.error(err);
