@@ -188,7 +188,9 @@ function createContextMenuItems(
             if (!file) return;
             try {
               const data = await handleJsonFileImport(file);
-              console.log(data);
+              Object.entries(data).forEach(([key, value]) => {
+                postLocalData(key, value);
+              });
               setShortcuts(sortPinned(data.shortcuts));
               toast("Settings successfully", sonnerMap.success);
             } catch (err) {
