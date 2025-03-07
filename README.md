@@ -2,7 +2,7 @@
 
 A modern React-based interface toolkit featuring beautiful animations, dynamic components, and Aurora background effects.
 
-Visit the [demo](https://mnt-interface.vercel.app/) here.
+Visit the [demo](https://new-tab-interface.vercel.app/) here.
 
 ## Features
 

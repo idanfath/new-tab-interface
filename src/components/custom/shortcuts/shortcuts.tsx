@@ -207,7 +207,18 @@ function createContextMenuItems(
       props: {
         onClick: () => {
           try {
-            exportToJson(shortcuts, "shortcuts.json");
+            const allowedKeys = [
+              "background",
+              "shortcuts",
+              "aurora_colors",
+              "github_username",
+            ];
+            const allLocalData = Object.fromEntries(
+              Object.entries(localStorage).filter(([key]) =>
+                allowedKeys.includes(key)
+              )
+            );
+            exportToJson(allLocalData, "new_tab_interface_backup");
             toast("Shortcuts exported successfully", sonnerMap.success);
           } catch (err) {
             console.error(err);
