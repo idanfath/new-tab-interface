@@ -1,15 +1,13 @@
 import ShortcutsContent from "@/components/custom/shortcuts/shortcuts";
 import MainLayout from "@/layouts/mainLayout";
-import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
     <MainLayout>
       <div
-        className={cn(
-          "max-w-[80vw] mb-10 max-h-[70vh] flex flex-col border border-white/5 relative bg-black/40 bg-glass rounded-lg",
-          "min-h-[700px] min-w-[1000px]"
-        )}
+        className={
+          "h-full w-full max-w-[80vw] max-h-[80vh] flex flex-col border border-white/5  bg-black/40 bg-glass rounded-lg"
+        }
       >
         <header className="flex items-center rounded-t-lg justify-between p-2 px-4 bg-black/40 bg-glass">
           <div className="flex-1"></div>

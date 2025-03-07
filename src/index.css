@@ -116,9 +116,6 @@
     @apply transition-all duration-500 epic-easing-faster
 }
 
-.sidebar-item {
-    @apply bg-black/10 shadow-black text-center select-none hover:bg-black/20 transition-all epic-easing hover:scale-105 hover:translate-x-2 justify-center backdrop-blur-2xl text-white/80 py-1 max-h-[400px] max-w-[150px] w-full p-2 cursor-pointer rounded-lg
-}
 
 .bg-glass {
     @apply bg-opacity-10 backdrop-blur-lg
