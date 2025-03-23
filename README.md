@@ -1,4 +1,4 @@
-# MNT Interface
+# New Tab Interface
 
 A modern React-based interface toolkit featuring beautiful animations, dynamic components, and Aurora background effects.
 
