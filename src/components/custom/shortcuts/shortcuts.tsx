@@ -28,7 +28,7 @@ const ShortcutsContent: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [filteredData, setFilteredData] = useState<Shortcut[] | null>();
   const [filter, setFilter] = useState("");
-
+  const isSquared = fetchLocalData("square_shortcuts", false);
   useEffect(() => {
     if (filter.length < 1) {
       setFilteredData(null);
@@ -64,7 +64,10 @@ const ShortcutsContent: React.FC = () => {
   return (
     <>
       <ContextMenuWrap
-        className="flex-1  w-full"
+        className={cn(
+          "flex-1 w-full pt-4 pb-4",
+          shortcuts.length > 5 && "pt-2"
+        )}
         items={createContextMenuItems(
           setIsEditing,
           setCurrentData,
@@ -114,6 +117,7 @@ const ShortcutsContent: React.FC = () => {
               <ShortcutCard
                 key={shortcut.id}
                 shortcut={shortcut}
+                square={isSquared}
                 modify={modify}
               />
             </button>

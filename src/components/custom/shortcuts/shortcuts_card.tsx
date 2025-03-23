@@ -6,7 +6,7 @@ import {
 import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
 import { iconMap } from "@/consts/shortcuts";
 import { ellipsis } from "@/lib/stringlib";
-import { cn, openUrl, getUrlHostname } from "@/lib/utils";
+import { cn, openUrl, getUrlHostname, fetchLocalData } from "@/lib/utils";
 import { Shortcut, shortcutModifyFunction } from "@/types/shortcuts";
 import { Pin, Globe } from "lucide-react";
 import { Favicon } from "../favicon/Favicon";
@@ -14,9 +14,11 @@ import { Favicon } from "../favicon/Favicon";
 export default function ShortcutCard({
   shortcut,
   modify,
+  square = false,
 }: {
   shortcut: Shortcut;
   modify: shortcutModifyFunction;
+  square?: boolean;
 }) {
   const hoverCardItem = [
     { label: "Name", value: shortcut.name },
@@ -67,9 +69,13 @@ export default function ShortcutCard({
     >
       <HoverCard>
         <HoverCardTrigger>
-          <ShortcutCardBarebone shortcut={shortcut} viewOnly={false} />
+          <ShortcutCardBarebone
+            shortcut={shortcut}
+            viewOnly={false}
+            square={square}
+          />
         </HoverCardTrigger>
-        <HoverCardContent className="bg-glass border-white/10 w-64 space-y-3 cursor-default">
+        <HoverCardContent className="bg-gradient-to-b from-neutral-900/90 to-black/90 border-white/10 w-fit min-w-64 space-y-3 cursor-default">
           <Favicon
             url={shortcut.url}
             size={96}
@@ -92,10 +98,14 @@ export default function ShortcutCard({
 function ShortcutCardBarebone({
   shortcut,
   viewOnly,
+  square,
 }: {
   shortcut: Shortcut;
   viewOnly: boolean;
+  square: boolean;
 }) {
+  const isSquared = fetchLocalData("square_shortcuts", false);
+
   const Icon = shortcut.pinned
     ? iconMap["Pin"]
     : iconMap[shortcut.icon] || Globe;
@@ -103,7 +113,8 @@ function ShortcutCardBarebone({
     <div
       className={cn(
         "bg-glass bg-white/10 p-2 rounded-md flex-col cursor-pointer flex border border-white/10  hover:bg-white/[0.08] animfast",
-        "w-32 aspect-square"
+        "h-32",
+        square ? "w-32 aspect-square" : "w-52"
       )}
       onClick={() => {
         if (!viewOnly) {
@@ -125,14 +136,14 @@ function ShortcutCardBarebone({
             )}
           </div>
           <div className="text-sm text-gray-50 text-nowrap">
-            {ellipsis(shortcut.name || "", 10)}
+            {ellipsis(shortcut.name || "", square ? 10 : 20)}
           </div>
         </div>
         <div className="text-gray-300 text-sm">
-          {ellipsis(shortcut.description || "", 20)}
+          {ellipsis(shortcut.description || "", square ? 20 : 45)}
         </div>
         <div className="text-white/50 text-nowrap text-[0.8rem]">
-          {ellipsis(getUrlHostname(shortcut.url), 20)}
+          {ellipsis(getUrlHostname(shortcut.url), square ? 20 : 30)}
         </div>
         <div className="text-white/20 h-full flex items-end text-nowrap text-[0.6rem]">
           Created {new Date(shortcut.createdAt).toLocaleDateString()}

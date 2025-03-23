@@ -17,7 +17,7 @@ export default function Home() {
             <div className="bg-green-500 hover:bg-opacity-80"></div>
           </div>
         </header>
-        <div className="p-4 flex-1 flex overflow-scroll no-scrollbar">
+        <div className="px-4 flex-1 flex overflow-scroll no-scrollbar">
           <ShortcutsContent />
         </div>
       </div>
