@@ -104,8 +104,6 @@ function ShortcutCardBarebone({
   viewOnly: boolean;
   square: boolean;
 }) {
-  const isSquared = fetchLocalData("square_shortcuts", false);
-
   const Icon = shortcut.pinned
     ? iconMap["Pin"]
     : iconMap[shortcut.icon] || Globe;
