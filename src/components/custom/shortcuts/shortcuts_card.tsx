@@ -6,7 +6,7 @@ import {
 import ContextMenuWrap from "@/components/wrapper/contextmenuwrap";
 import { iconMap } from "@/consts/shortcuts";
 import { ellipsis } from "@/lib/stringlib";
-import { cn, openUrl, getUrlHostname, fetchLocalData } from "@/lib/utils";
+import { cn, openUrl, getUrlHostname } from "@/lib/utils";
 import { Shortcut, shortcutModifyFunction } from "@/types/shortcuts";
 import { Pin, Globe } from "lucide-react";
 import { Favicon } from "../favicon/Favicon";
